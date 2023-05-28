@@ -5,38 +5,7 @@ from time import time
 from pandas import DataFrame
 
 """
-Name                          |Purpose
-------------------------------|--------------------------------------------------------
-`bubble_sort(x)`              |Returns the sorted elements of `x` using bubble sort
-`block_sort(x)`               |Returns the sorted elements of `x` using block sort
-`cube_sort(x)`                |Returns the sorted elements of `x` using cube sort
-`cocktail_shaker_sort(x)`
-`comb_sort(x)`                |Returns the sorted elements of `x` using comb sort
-`cycle_sort(x)`               |Returns the sorted elements of `x` using cycle sort
-`exchange_sort(x)`            |Returns the sorted elements of `x` using exchange sort
-`gnome_sort(x)`               |Returns the sorted elements of `x` using gnome sort
-`heap_sort(x)`                |Returns the sorted elements of `x` using heap sort
-`intro_sort(x)`               |Returns the sorted elements of `x` using intro sort
-`insertion_sort(x)`           |Returns the sorted elements of `x` using insertion sort
-`is_sorting_method(m)`        |Returns `True` if `m` is a sorting method
-`library_sort(x)`             |Returns the sorted elements of `x` using library sort
-`merge_sort(x)`               |Returns the sorted elements of `x` using merge sort
-`odd_even_sort(x)`            |Returns the sorted elements of `x` using odd-even sort
-`quick_sort(x)`               |Returns the sorted elements of `x` using quick sort
-`selection_sort(x)`           |Returns the sorted elements of `x` using selection sort
-`shell_sort(x)`               |Returns the sorted elements of `x` using shell sort
-`tim_sort(x)`                 |Returns the sorted elements of `x` using tim sort
-`tree_sort(x)`                |Returns the sorted elements of `x` using tree sort
-`patience_sort(x)`            |Returns the sorted elements of `x` using patience sort
-`smooth_sort(x)`              |Returns the sorted elements of `x` using smooth sort
-`sort(x)`                     |Returns the sorted elements of `x`
-`sort(x, m)`                  |Returns the sorted elements of `x` using method `m`
-`strand_sort(x)`              |Returns the sorted elements of `x` using strand sort
-`tournament_sort(x)`          |Returns the sorted elements of `x` using tournament sort
-"""
-
-"""
-These are all the solution functions for sorting.
+These are all the solution functions for doing a DNA alignment.
 
 This includes doing a speed measurement.
 """
@@ -82,6 +51,30 @@ def are_speed_measurements(x):
         return False
     return True
 
+class DnaSequence:
+
+    """Class for a DNA sequence."""
+
+    def __init__(self, s):
+        """Create a DNA sequence.
+
+        `s` must a string consisting of uppercase nucleotide one-letter abbreviations,
+        for example 'ACGT'
+        """
+        if not isinstance(s, str):
+            message = "'s' must be a string"
+            raise TypeError(message)
+        import re
+        dna_pattern = re.compile("^[ACGT]*$")
+        if not dna_pattern.match(s):
+            message = "'s' must match pattern " + dna_pattern
+            raise TypeError(message)
+        self.s = s
+
+def get_alignment_functions():
+    """Get a list of alignment functions."""
+    return []
+
 def get_datas(rng_seed = 42, data_lengths = [9, 99, 999]):
     """Get a list of datasets (hence, the reduplicated/Gollumese plural).
 
@@ -95,15 +88,6 @@ def get_datas(rng_seed = 42, data_lengths = [9, 99, 999]):
         shuffle(data)
         datas.append(data)
     return datas
-
-def get_sorting_functions():
-    """Get a list with all the sorting functions.
-
-    Each sorting function is a pure function
-    that takes 1 argument
-    and returns the sorted argument
-    """
-    return [silly_sort, stupid_sort]
 
 def get_speed_measurements(functions, datas):
     """Measure how long the runtime is of each function per each data.
@@ -195,24 +179,3 @@ def save_speed_measurements(speed_measurements, csv_filename):
         x = speed_measurements,
         csv_filename = csv_filename,
     )
-
-def silly_sort(data):
-    """Sorts `data` in a silly way.
-
-    Returns the `data` after sorting it.
-    """
-    sorted_data = stupid_sort(data)
-
-    # Just to be super sure it is sorted :-)
-    return sorted(sorted_data)
-
-def stupid_sort(data):
-    """Sorts `data` in a stupid way.
-
-    Returns the `data` after sorting it.
-    """
-    while True:
-        if (is_sorted(data)):
-            return data
-        shuffle(data)
-

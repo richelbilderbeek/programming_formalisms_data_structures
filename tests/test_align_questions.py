@@ -1,12 +1,13 @@
-"""Test the functions in src.pfmp_richelbilderbeek.prime_solutions."""
+"""Test the functions in src.pfdatastructures_richelbilderbeek.align_solutions."""
 import os.path
 import unittest
 
-from src.pfmp_richelbilderbeek.sort_solutions import (
+from src.pfdatastructures_richelbilderbeek.data_structures_solutions import (
+    DnaSequence,
     are_functions,
     are_speed_measurements,
+    get_alignment_functions,
     get_datas,
-    get_sorting_functions,
     get_speed_measurements,
     get_test_datas,
     get_test_speed_measurements,
@@ -16,20 +17,16 @@ from src.pfmp_richelbilderbeek.sort_solutions import (
     is_sorted,
     save_dict,
     save_speed_measurements,
-    silly_sort,
-    stupid_sort,
 )
 
 
-class TestSortSolutions(unittest.TestCase):
+class TestAlignSolutions(unittest.TestCase):
 
-    """Class to test the functions in src.pfmp_richelbilderbeek.prime_solutions."""
+    """Class to test the functions in data_structures_questions.py."""
 
     def test_are_functions(self):
         """Test 'are_functions'."""
         self.assertIsNotNone(are_functions.__doc__)
-        self.assertTrue(are_functions([silly_sort, stupid_sort]))
-        self.assertTrue(are_functions([silly_sort]))
         self.assertFalse(are_functions([]))
         self.assertFalse(are_functions(3.14))
         self.assertFalse(are_functions("Hello"))
@@ -60,6 +57,14 @@ class TestSortSolutions(unittest.TestCase):
         }
         self.assertFalse(are_speed_measurements(nasty_data_3))
 
+    def test_dna_sequence_class(self):
+        """Test the 'DnaSequence' class."""
+        self.assertIsNotNone(DnaSequence.__doc__)
+        self.assertRaises(TypeError, DnaSequence, 12345)
+        self.assertRaises(TypeError, DnaSequence, ["A", "C"])
+        self.assertRaises(TypeError, DnaSequence, "nonsense")
+        self.assertEqual(DnaSequence("ACGT").s, "ACGT")
+
     def test_get_datas(self):
         """Test 'get_datas'."""
         self.assertIsNotNone(get_datas.__doc__)
@@ -67,17 +72,12 @@ class TestSortSolutions(unittest.TestCase):
         self.assertEqual(get_datas(42), get_datas(42))
         self.assertNotEqual(get_datas(42), get_datas(43))
 
-    def test_get_sorting_functions(self):
-        """Test 'get_sorting_functions'."""
-        self.assertIsNotNone(get_sorting_functions.__doc__)
-        self.assertTrue(are_functions(get_sorting_functions()))
-
     def test_get_speed_measurements(self):
         """Test 'get_speed_measurements'."""
         self.assertIsNotNone(get_speed_measurements.__doc__)
         speed_measurements = get_speed_measurements(
             datas = get_test_datas(),
-            functions = get_sorting_functions(),
+            functions = get_alignment_functions(),
         )
         self.assertTrue(are_speed_measurements(speed_measurements))
 
@@ -146,20 +146,3 @@ class TestSortSolutions(unittest.TestCase):
         )
         self.assertTrue(os.path.isfile(csv_filename))
         os.remove(csv_filename)
-
-    def test_silly_sort(self):
-        """Test 'silly_sort'."""
-        self.assertIsNotNone(silly_sort.__doc__)
-        data = get_datas()[0]
-        self.assertFalse(is_sorted(data))
-        sorted_data = silly_sort(data)
-        self.assertTrue(is_sorted(sorted_data))
-
-
-    def test_stupid_sort(self):
-        """Test 'stupid_sort'."""
-        self.assertIsNotNone(stupid_sort.__doc__)
-        data = get_datas(rng_seed = 42, data_lengths = [3])[0]
-        self.assertFalse(is_sorted(data))
-        sorted_data = stupid_sort(data)
-        self.assertTrue(is_sorted(sorted_data))
